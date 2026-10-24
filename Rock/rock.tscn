@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://bqsmu0afa6rv"]
+
+[ext_resource type="Script" uid="uid://2fjsp7o71l5g" path="res://Rock/rock.gd" id="1_uahat"]
+[ext_resource type="Texture2D" uid="uid://c1m2k1pwdc3o8" path="res://assets/rock.png" id="2_rimyn"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_mnhyh"]
+bounce = 1.0
+
+[node name="Rock" type="RigidBody2D" unique_id=1312308020]
+physics_material_override = SubResource("PhysicsMaterial_mnhyh")
+linear_damp_mode = 1
+angular_damp_mode = 1
+script = ExtResource("1_uahat")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=806609640]
+texture = ExtResource("2_rimyn")
