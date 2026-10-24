@@ -14,24 +14,33 @@ var rotation_dir = 0
 
 enum {INIT, ALIVE, INVULNERABLE, DEAD}
 var state = INIT
-var shipPos = [Vector2(x: -1.0, y: -1.0)]
-# Called when the node enters the scene tree for the first time.
+var shipSprites: Array[Sprite2D] = []
+# Called when the node enters the scene tree for the first time.\
+
 func _ready() -> void:
 	$GunCooldown.wait_time = fire_rate
 	screen_size = get_viewport_rect().size
 	$RigidBody2D.screen_size = screen_size
 	change_state(ALIVE) #debug?
+	setShips()
 	pass # Replace with function body.
 
 func setShips():
-	for i in range(0, 7):
-		var ship = $RigidBody2D/Sprite2D
-		ship.transform.x = screen_siz
+	for i in range(-1, 2):
+		for j in range(-1, 2):
+			if i == 0 and j == 0:
+				continue
+			var ship = $RigidBody2D/Sprite2D.duplicate() as Sprite2D
+			ship.transform.origin.x = randi_range(10, 1000)
+			shipSprites.append(ship)
+			add_child(ship)
 		
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	get_input()
+	setShipPositions()
 	pass
+
 
 func change_state(new_state):
 	state = new_state
@@ -70,12 +79,14 @@ func _physics_process(delta: float) -> void:
 	$RigidBody2D.constant_force = thrust
 	$RigidBody2D.constant_torque = rotation_dir * spin_power
 
-func _integrate_forces(physics_state: PhysicsDirectBodyState2D) -> void:
-	var xform = physics_state.transform
-	xform.origin.x = wrapf(xform.origin.x, 0, screen_size.x)
-	xform.origin.y = wrapf(xform.origin.y, 0, screen_size.y)
-	physics_state.transform = xform
-
-
 func _on_gun_cooldown_timeout() -> void:
 	canShoot = true
+
+func setShipPositions():
+	var counter = 0
+	for i in range(-1, 2):
+		for j in range(-1, 2):
+			if i == 0 and j == 0:
+				continue
+			shipSprites[counter].global_transform = ($RigidBody2D/Sprite2D.global_transform).translated(screen_size * Vector2(i, j))
+			counter += 1

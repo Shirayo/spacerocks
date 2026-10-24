@@ -37,3 +37,5 @@ texture = ExtResource("3_k53q1")
 position = Vector2(50, 0)
 
 [connection signal="timeout" from="GunCooldown" to="." method="_on_gun_cooldown_timeout"]
+[connection signal="test" from="RigidBody2D" to="." method="_on_rigid_body_2d_test"]
+[connection signal="item_rect_changed" from="RigidBody2D/Sprite2D" to="." method="_on_sprite_2d_item_rect_changed"]
